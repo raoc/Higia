@@ -1,16 +1,19 @@
 import paho.mqtt.client as mqtt
 
+data=""; 
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code "+str(rc))
   client.subscribe("device/r")
 
 def on_message(client, userdata, msg):
-  if msg.payload.decode() == "Hello world!":
-    print("Yes!")
-  else:
-    print("No!")
-    #client.disconnect()
+    data=msg.payload.decode()
+    print(data)
+ # if msg.payload.decode() == "Hello world!":
+ #   print("Yes!")
+ # else:
+ #   print("No!")
+ #   #client.disconnect()
     
 client = mqtt.Client()
 client.connect("broker.hivemq.com",1883,60)
