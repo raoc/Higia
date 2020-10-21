@@ -7,10 +7,12 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
 
-	data = str(msg.payload.decode())
-	data = pd.DataFrame(data, columns=['ID', 'TAG']
-    #data = data.to_csv (r'/Users/rafael/Documents/Proyectos/BioInventario\IDTAGS.csv', index = None) 
-    print(data)
+	d = str(msg.payload.decode())
+	z = np.array(d)
+	data = pd.DataFrame(z)
+	data = data.T
+	data = data.rename(columns={0:"ID",1:"TAG"})
+	print(data)
  # if msg.payload.decode() == "Hello world!":
  #   print("Yes!")
  # else:
