@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import pandas as pd
 import numpy as np
-#import os.path
+import os.path
 #import csv
 
 def Convert(string): 
@@ -9,13 +9,32 @@ def Convert(string):
     return li
 
 def search_reader(yy):
-    data=pd.read_csv("readers.csv")
-    r = data['ID'].tolist()
     yy = int(yy)
-    if yy in r:
-        print('Ahi esta')
-    else:
-        print('Ahi no esta')
+    if os.path.isfile("readersl.csv")==False: 
+        print('Digite la ubicación del nuevo lector ID: ', yy)
+        loc=input()
+        tucu=[yy, loc]
+        data = pd.DataFrame(tucu)
+        data = data.T
+        data = data.rename(columns={0:"ID",1:"LOC"})
+        print(data)
+        data.to_csv(r'readersl.csv', index = False)
+    elif os.path.isfile("readersl.csv")==True:
+        dat = pd.read_csv("readersl.csv")
+        r = dat['ID'].tolist()
+        if yy in r:
+            print('Ahi esta')
+        else:
+            print('Digite la ubicación del nuevo lector: ', yy)
+            loc=input()
+        tucu=[yy, loc]
+        data1 = pd.DataFrame(tucu)
+        data1 = data1.T
+        data1 = data1.rename(columns={0:"ID",1:"LOC"})
+        u=dat.append(data1, ignore_index=True)
+        print(u)
+        u.to_csv(r'readersl.csv', index = False)
+
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
