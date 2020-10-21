@@ -1,13 +1,13 @@
 import paho.mqtt.client as mqtt
-
-data=""; 
+import pandas as pd
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code "+str(rc))
   client.subscribe("device/r")
 
 def on_message(client, userdata, msg):
-    data=msg.payload.decode()
+    data = pd.read_json(msg.payload.decode())
+    data = data.to_csv (r'/Users/rafael/Documents/Proyectos/BioInventario\IDTAGS.csv', index = None) 
     print(data)
  # if msg.payload.decode() == "Hello world!":
  #   print("Yes!")
