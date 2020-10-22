@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import paho.mqtt.client as mqtt
-import pandas as pd
-import numpy as np
-import os.path
-=======
 #### SE IMPORTAN LAS LIBRERIAS######
 import paho.mqtt.client as mqtt #mqtt BROKER conection
 import pandas as pd #Manipulacion de los datos
 import numpy as np #Operacion de arreglos numericos
 import os.path #Acceder a rutas del sistema operativo
 ####################################
->>>>>>> d1ac49ff9e14e7bfa6e0acb339533c03866a1f1a
 
 
 ############FUNCION PARA CONVERSION DE DATOS DE LECTURA EN STRING#########
@@ -23,15 +16,9 @@ def Convert(string):
 
 ########CREACION DEL DOCUMENTO CSV A PARTIR DE LOS DATOS DE LECTURA#########
 def search_reader(yy):
-<<<<<<< HEAD
-    yy = int(yy)
-    if os.path.isfile("readersl.csv")==False: 
-        print('Digite la ubicación del nuevo lector SERIAL: ', yy)
-=======
     yy = int(yy) #Se lee el valor de lectura(serial) y se convierte en una variable de tipo int
     if os.path.isfile("readersl.csv")==False: #Condicional "Si el archivo csv no existe, se crea y se registra el prime serial"
-        print('Digite la ubicación del nuevo lector ID: ', yy)
->>>>>>> d1ac49ff9e14e7bfa6e0acb339533c03866a1f1a
+        print('Digite la ubicación del nuevo lector SERIAL: ', yy)
         loc=input()
         tucu=[yy, loc]
         data = pd.DataFrame(tucu)
@@ -71,12 +58,7 @@ def on_message(client, userdata, msg):
     z = np.array(d)
     data1 = pd.DataFrame(z)
     data1 = data1.T
-<<<<<<< HEAD
     data1 = data1.rename(columns={0:"SERIAL",1:"TAG"}) 
-    #tag=data1['TAG']
-=======
-    data1 = data1.rename(columns={0:"SERIAL",1:"TAG"}) 
->>>>>>> d1ac49ff9e14e7bfa6e0acb339533c03866a1f1a
     xx = np.array(data1['SERIAL'])
     xx = xx[0]
     search_reader(xx)
