@@ -77,7 +77,7 @@ def on_message(client, userdata, msg):
 =======
     data1 = data1.rename(columns={0:"SERIAL",1:"TAG"}) 
 >>>>>>> d1ac49ff9e14e7bfa6e0acb339533c03866a1f1a
-    xx = np.array(data1['ID'])
+    xx = np.array(data1['SERIAL'])
     xx = xx[0]
     search_reader(xx)
 ##################################################
