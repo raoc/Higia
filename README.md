@@ -1,2 +1,2 @@
 # Higia
-VAMOS A GANAR PLATA. xD
+Sistema de localizacion de dispositivos, registro en base de datos
