@@ -81,6 +81,8 @@ def on_message(client, userdata, msg):
     tag = np.array(data1['TAG'])
     tag = tag[0]
     search_reader(xx, tag)
+
+    
 client = mqtt.Client()
 client.connect("broker.hivemq.com",1883,60)
 #client.connect("192.168.1.11",1883,60)
