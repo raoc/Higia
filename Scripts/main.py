@@ -1,13 +1,14 @@
-import paho.mqtt.client as mqtt
-import pandas as pd
-import numpy as np
-import os.path
-#import csv
+import paho.mqtt.client as mqtt #Librería utilizada para establecer comunicación mediante protocolo MQTT.
+import pandas as pd             #Librería que contiene paquete de herramientas para manipulación de datos. 
+import numpy as np              #Librería que contiene paquete de herramientas para operacines matriciales.
+import os.path                  #Librería utilizada para poder obtener las rutas y caracteristicas del Sistema Operativo.
 
+'''Esta función convierte en String los valores numericos envíados a ella'''
 def Convert(string): 
     li = list(string.split(",")) 
     return li
 
+''' Esta Funcion es la encargada de crear la base de datos de dispositivos medicos'''
 def search_mdevice(yy):
     yy = int(yy)
     if os.path.isfile("mdevice.csv")==False: 
@@ -35,7 +36,7 @@ def search_mdevice(yy):
         print(u)
         u.to_csv(r'mdevice.csv', index = False)
 
-
+''' Esta Funcion es la encargada de crear la base de datos de dispositivos lectores RFID'''
 def search_reader(yy, zz):
     zz=int(zz)
     yy = int(yy)
@@ -64,11 +65,13 @@ def search_reader(yy, zz):
         print(u)
         u.to_csv(r'readersl.csv', index = False)
 
-
+''' Esta Funcion es la encargada de suscribir la aplicación en el tópico device/r dentro del blocker'''
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
 	client.subscribe("device/r")
 
+''' Esta Funcion es la encargada de recibir los mensajes que envían los rectores al tópico device/r dentro del blocker.
+Tambien envía dicha información a las funciones de registro de lectores y dispositivos medicos'''
 def on_message(client, userdata, msg):
     d = msg.payload.decode()
     d=Convert(d)
@@ -82,12 +85,10 @@ def on_message(client, userdata, msg):
     tag = tag[0]
     search_reader(xx, tag)
 
-    
-client = mqtt.Client()
-client.connect("broker.hivemq.com",1883,60)
-#client.connect("192.168.1.11",1883,60)
 
+client = mqtt.Client() #Utilizamos la case cliente para crear la instancia mqtt
+#client.connect("broker.hivemq.com",1883,60) #Esta instrucción configura los parametros de conexión al brocker
+client.connect("192.168.1.11",1883,60)
 client.on_connect = on_connect
 client.on_message = on_message
-
 client.loop_forever()
