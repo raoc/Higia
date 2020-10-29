@@ -12,31 +12,28 @@ def Convert(string):
 ''' Esta Funcion es la encargada guardar historial de movimientos de los equipos medicos'''
 def save_history(tag, medevice, location):
     yy = int(tag)
-    #print(yy," : ", medevice, " : ",location)
     if os.path.isfile("hdevice.csv")==False: 
-        #meter los time_stamp
-        
-        tucu=[tag, medevice, location]
+        time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+        tucu=[yy, medevice, location, time]
         data = pd.DataFrame(tucu)
         data = data.T
-        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN",4:"REG_OUT"})
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
+        #data['REG_IN'] = datetime.datetimenow()
         print(data)
         data.to_csv(r'hdevice.csv', index = False)
-    elif os.path.isfile("hdevice.csv")==True:
+    elif os.path.isfile("hdevice.csv")==True:        
         dat = pd.read_csv("hdevice.csv")
         r = dat['TAG'].tolist()
-        if yy in r:
-            print('Ahi esta')
-        else:
-            print('Digite el nombre del nuevo dispositivo medico con TAG: ', yy)
-            loc=input()
-        tucu=[yy, loc]
+        t = dat.where(dat['TAG']==yy).dropna()
+        t1 = t['MDEVICE'].tolist()
+        time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+        tucu=[yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)
-        data1 = data1.T
-        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE"})
+        data1= data1.T
+        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
         u=dat.append(data1, ignore_index=True)
         print(u)
-        u.to_csv(r'hdevice.csv', index = False)
+        u.to_csv(r'hdevice.csv', index = False)    
 
 ''' Esta Funcion es la encargada de crear la base de datos de dispositivos medicos'''
 def search_mdevice(yy, location):
