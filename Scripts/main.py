@@ -2,14 +2,44 @@ import paho.mqtt.client as mqtt #Librería utilizada para establecer comunicaci�
 import pandas as pd             #Librería que contiene paquete de herramientas para manipulación de datos. 
 import numpy as np              #Librería que contiene paquete de herramientas para operacines matriciales.
 import os.path                  #Librería utilizada para poder obtener las rutas y caracteristicas del Sistema Operativo.
+import datetime
 
 '''Esta función convierte en String los valores numericos envíados a ella'''
 def Convert(string): 
     li = list(string.split(",")) 
     return li
 
+''' Esta Funcion es la encargada guardar historial de movimientos de los equipos medicos'''
+def save_history(tag, medevice, location):
+    yy = int(tag)
+    #print(yy," : ", medevice, " : ",location)
+    if os.path.isfile("hdevice.csv")==False: 
+        #meter los time_stamp
+        
+        tucu=[tag, medevice, location]
+        data = pd.DataFrame(tucu)
+        data = data.T
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN",4:"REG_OUT"})
+        print(data)
+        data.to_csv(r'hdevice.csv', index = False)
+    elif os.path.isfile("hdevice.csv")==True:
+        dat = pd.read_csv("hdevice.csv")
+        r = dat['TAG'].tolist()
+        if yy in r:
+            print('Ahi esta')
+        else:
+            print('Digite el nombre del nuevo dispositivo medico con TAG: ', yy)
+            loc=input()
+        tucu=[yy, loc]
+        data1 = pd.DataFrame(tucu)
+        data1 = data1.T
+        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE"})
+        u=dat.append(data1, ignore_index=True)
+        print(u)
+        u.to_csv(r'hdevice.csv', index = False)
+
 ''' Esta Funcion es la encargada de crear la base de datos de dispositivos medicos'''
-def search_mdevice(yy):
+def search_mdevice(yy, location):
     yy = int(yy)
     if os.path.isfile("mdevice.csv")==False: 
         print('Digite el nombre del nuevo dispositivo medico con TAG: ', yy)
@@ -23,8 +53,10 @@ def search_mdevice(yy):
     elif os.path.isfile("mdevice.csv")==True:
         dat = pd.read_csv("mdevice.csv")
         r = dat['TAG'].tolist()
+        t = dat.where(dat['TAG']==yy).dropna()
+        t1 = t['MDEVICE'].tolist()
         if yy in r:
-            print('Ahi esta')
+            save_history(yy, t1[0], location)
         else:
             print('Digite el nombre del nuevo dispositivo medico con TAG: ', yy)
             loc=input()
@@ -52,8 +84,10 @@ def search_reader(yy, zz):
     elif os.path.isfile("readersl.csv")==True:
         dat = pd.read_csv("readersl.csv")
         r = dat['SERIAL'].tolist()
+        t = dat.where(dat['SERIAL']==yy).dropna()
+        t1 = t['LOC'].tolist()
         if yy in r:
-           search_mdevice(zz)
+           search_mdevice(zz, t1[0])
         else:
             print('Digite la ubicación del nuevo lector: ', yy)
             loc=input()
@@ -87,8 +121,8 @@ def on_message(client, userdata, msg):
 
 
 client = mqtt.Client() #Utilizamos la case cliente para crear la instancia mqtt
-#client.connect("broker.hivemq.com",1883,60) #Esta instrucción configura los parametros de conexión al brocker
-client.connect("192.168.1.11",1883,60)
+client.connect("broker.hivemq.com",1883,60) #Esta instrucción configura los parametros de conexión al brocker
+#client.connect("192.168.1.11",1883,60)
 client.on_connect = on_connect
 client.on_message = on_message
 client.loop_forever()
