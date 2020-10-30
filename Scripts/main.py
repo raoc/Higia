@@ -18,7 +18,6 @@ def save_history(tag, medevice, location):
         data = pd.DataFrame(tucu)
         data = data.T
         data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
-        #data['REG_IN'] = datetime.datetimenow()
         print(data)
         data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
@@ -32,6 +31,7 @@ def save_history(tag, medevice, location):
         data1= data1.T
         data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
         u=dat.append(data1, ignore_index=True)
+        #u=u.iloc[::-1]
         print(u)
         u.to_csv(r'hdevice.csv', index = False)    
 
