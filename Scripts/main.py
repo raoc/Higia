@@ -19,13 +19,12 @@ def save_history(tag, medevice, location):
         data = pd.DataFrame(tucu)
         data = data.T
         data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        os.system('clear')
         print(data)
         data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
         dat = pd.read_csv("hdevice.csv")
-        r = dat['TAG'].tolist()
         t = dat.where(dat['TAG']==yy).dropna()
-        t1 = t['MDEVICE'].tolist()
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
         tucu=[yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)
