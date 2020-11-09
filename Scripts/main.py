@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt #Librería utilizada para establecer comunicaci�
 import pandas as pd             #Librería que contiene paquete de herramientas para manipulación de datos. 
 import numpy as np              #Librería que contiene paquete de herramientas para operacines matriciales.
 import os.path                  #Librería utilizada para poder obtener las rutas y caracteristicas del Sistema Operativo.
+import os
 import datetime
 
 '''Esta función convierte en String los valores numericos envíados a ella'''
@@ -17,7 +18,7 @@ def save_history(tag, medevice, location):
         tucu=[yy, medevice, location, time]
         data = pd.DataFrame(tucu)
         data = data.T
-        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
         print(data)
         data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
@@ -29,9 +30,9 @@ def save_history(tag, medevice, location):
         tucu=[yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)
         data1= data1.T
-        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"REG_IN"})
-        u=dat.append(data1, ignore_index=True)
-        #u=u.iloc[::-1]
+        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        u = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
+        os.system('clear')
         print(u)
         u.to_csv(r'hdevice.csv', index = False)    
 
@@ -57,13 +58,13 @@ def search_mdevice(yy, location):
         else:
             print('Digite el nombre del nuevo dispositivo medico con TAG: ', yy)
             loc=input()
-        tucu=[yy, loc]
-        data1 = pd.DataFrame(tucu)
-        data1 = data1.T
-        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE"})
-        u=dat.append(data1, ignore_index=True)
-        print(u)
-        u.to_csv(r'mdevice.csv', index = False)
+            tucu=[yy, loc]
+            data1 = pd.DataFrame(tucu)
+            data1 = data1.T
+            data1 = data1.rename(columns={0:"TAG",1:"MDEVICE"})
+            u=dat.append(data1, ignore_index=True)
+            print(u)
+            u.to_csv(r'mdevice.csv', index = False)
 
 ''' Esta Funcion es la encargada de crear la base de datos de dispositivos lectores RFID'''
 def search_reader(yy, zz):
@@ -88,13 +89,13 @@ def search_reader(yy, zz):
         else:
             print('Digite la ubicación del nuevo lector: ', yy)
             loc=input()
-        tucu=[yy, loc]
-        data1 = pd.DataFrame(tucu)
-        data1 = data1.T
-        data1 = data1.rename(columns={0:"SERIAL",1:"LOC"})
-        u=dat.append(data1, ignore_index=True)
-        print(u)
-        u.to_csv(r'readersl.csv', index = False)
+            tucu=[yy, loc]
+            data1 = pd.DataFrame(tucu)
+            data1 = data1.T
+            data1 = data1.rename(columns={0:"SERIAL",1:"LOC"})
+            u=dat.append(data1, ignore_index=True)
+            print(u)
+            u.to_csv(r'readersl.csv', index = False)
 
 ''' Esta Funcion es la encargada de suscribir la aplicación en el tópico device/r dentro del blocker'''
 def on_connect(client, userdata, flags, rc):
