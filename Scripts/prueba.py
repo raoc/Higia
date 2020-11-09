@@ -11,32 +11,48 @@ def Convert(string):
     return li
 
 def display(u):
-	print(u)
+    if os.path.isfile('display.csv')==False:
+        data = pd.DataFrame(u) 
+        data = data.T
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        os.system('clear')
+        print(data)
+        data.to_csv(r'display.csv', index = False)
+    elif os.path.isfile("display.csv")==True:        
+        dat = pd.read_csv("display.csv")
+        data1 = pd.DataFrame(u)
+        data1 = data1.T
+        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        k = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
+        os.system('clear')
+        print(k)
+        k.to_csv(r'display.csv', index = False)    
+	
 
 
 ''' Esta Funcion es la encargada guardar historial de movimientos de los equipos medicos'''
 def save_history(tag, medevice, location):
     yy = int(tag)
     if os.path.isfile("hdevice.csv")==False: 
-		time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-		tucu=[yy, medevice, location, time]
-		data = pd.DataFrame(tucu)
-		data = data.T
-		data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
-		os.system('clear')
-		display(data["TAG"][0])
-		data.to_csv(r'hdevice.csv', index = False)
+        time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+        tucu=[yy, medevice, location, time]
+        data = pd.DataFrame(tucu)
+        data = data.T
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        os.system('clear')
+        display(data.iloc[0])
+        data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
         dat = pd.read_csv("hdevice.csv")
         t = dat.where(dat['TAG']==yy).dropna()
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-        tucu=[yy, medevice, location, time]
+        tucu = [yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)
-        data1= data1.T
+        data1 = data1.T
         data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
         u = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
-		display(u["TAG"][0])
         os.system('clear')
+        display(u.iloc[0])
         #print(u)
         u.to_csv(r'hdevice.csv', index = False)    
 
