@@ -14,21 +14,28 @@ def display(u):
     if os.path.isfile('display.csv')==False:
         data = pd.DataFrame(u) 
         data = data.T
-        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
         os.system('clear')
         print(data)
         data.to_csv(r'display.csv', index = False)
-    elif os.path.isfile("display.csv")==True:        
+    elif os.path.isfile("display.csv")==True:       
         dat = pd.read_csv("display.csv")
-        data1 = pd.DataFrame(u)
-        data1 = data1.T
-        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
-        k = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
-        os.system('clear')
-        print(k)
-        k.to_csv(r'display.csv', index = False)    
-	
-
+        h = np.array(u["TAG"])
+        j = np.array(dat["TAG"])
+        if h in j:
+            os.system('clear')
+            i=list(dat[dat['TAG']==u['TAG']].index)
+            k =  dat.drop(dat.index[i]).reset_index().drop(columns='index')
+            print(k)
+            k.to_csv(r'display.csv', index = False)
+        else:
+            data1 = pd.DataFrame(u)
+            data1 = data1.T
+            data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
+            k = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
+            os.system('clear')
+            print(k)
+            k.to_csv(r'display.csv', index = False)
 
 ''' Esta Funcion es la encargada guardar historial de movimientos de los equipos medicos'''
 def save_history(tag, medevice, location):
@@ -38,18 +45,17 @@ def save_history(tag, medevice, location):
         tucu=[yy, medevice, location, time]
         data = pd.DataFrame(tucu)
         data = data.T
-        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
         os.system('clear')
         display(data.iloc[0])
         data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
         dat = pd.read_csv("hdevice.csv")
-        t = dat.where(dat['TAG']==yy).dropna()
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
         tucu = [yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)
         data1 = data1.T
-        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"TIMESTAMP"})
+        data1 = data1.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
         u = pd.DataFrame(pd.concat([data1, dat])).reset_index().drop(columns='index')
         os.system('clear')
         display(u.iloc[0])
