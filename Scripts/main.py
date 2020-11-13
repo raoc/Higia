@@ -24,7 +24,7 @@ def save_history(tag, medevice, location):
         data.to_csv(r'hdevice.csv', index = False)
     elif os.path.isfile("hdevice.csv")==True:        
         dat = pd.read_csv("hdevice.csv")
-        t = dat.where(dat['TAG']==yy).dropna()
+        #t = dat.where(dat['TAG']==yy).dropna()
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
         tucu=[yy, medevice, location, time]
         data1 = pd.DataFrame(tucu)

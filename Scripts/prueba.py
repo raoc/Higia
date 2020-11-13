@@ -2,14 +2,17 @@ import paho.mqtt.client as mqtt #Librería utilizada para establecer comunicaci�
 import pandas as pd             #Librería que contiene paquete de herramientas para manipulación de datos. 
 import numpy as np              #Librería que contiene paquete de herramientas para operacines matriciales.
 import os.path                  #Librería utilizada para poder obtener las rutas y caracteristicas del Sistema Operativo.
-import os
-import datetime
+import os                       
+import datetime                 #Libreria utilizada para realizar los TIMESTAMPS.
 
 '''Esta función convierte en String los valores numericos envíados a ella'''
 def Convert(string): 
     li = list(string.split(",")) 
     return li
 
+'''Esta función sera la que generara el archivo de localizacion principal
+   y tendra el trabajo de presentar en pantalla la evolucion de dicho archivo
+   en tiempo real'''
 def display(u):
     if os.path.isfile('display.csv')==False:
         data = pd.DataFrame(u) 
