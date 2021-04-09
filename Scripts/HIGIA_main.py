@@ -1,9 +1,9 @@
-import paho.mqtt.client as mqtt #Librería utilizada para establecer comunicación mediante protocolo MQTT.
-import pandas as pd             #Librería que contiene paquete de herramientas para manipulación de datos. 
-import numpy as np              #Librería que contiene paquete de herramientas para operacines matriciales.
-import os.path                  #Librería utilizada para poder obtener las rutas y caracteristicas del Sistema Operativo.
+import paho.mqtt.client as mqtt 
+import pandas as pd            
+import numpy as np             
+import os.path                  
 import os                       
-import datetime                 #Libreria utilizada para realizar los TIMESTAMPS.
+import datetime                 
 
 '''Esta función convierte en String los valores numericos envíados a ella'''
 def Convert(string): 
