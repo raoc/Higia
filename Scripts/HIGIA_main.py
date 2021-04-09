@@ -129,7 +129,8 @@ def search_reader(ids, tag):
 ''' Esta Funcion es la encargada de suscribir la aplicación en el tópico device/r dentro del blocker'''
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
-	client.subscribe("TrabajodegradoMIAM")
+	client.subscribe("*TOPIC NAME*")
+	
 ''' Esta Funcion es la encargada de recibir los mensajes que envían los rectores al tópico device/r dentro del blocker.
 Tambien envía dicha información a las funciones de registro de lectores y dispositivos medicos'''
 def on_message(client, userdata, msg):
