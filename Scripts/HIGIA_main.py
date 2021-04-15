@@ -5,14 +5,14 @@ import os.path
 import os                       
 import datetime                 
 
-'''Esta función convierte en String los valores numericos envíados a ella'''
+#This function converts the numerical values sent to it into String.
 def Convert(string): 
     li = list(string.split(",")) 
     return li
 
-'''Esta función sera la que generara el archivo de localizacion principal
-   y tendra el trabajo de presentar en pantalla la evolucion de dicho archivo
-   en tiempo real'''
+#This function will be the one that will generate the main localization file
+#and it will have the job of displaying on screen the update of this file
+#in real time
 def display(data_gen):
     if os.path.isfile('display.csv')==False:
         data = pd.DataFrame(data_gen) 
@@ -40,7 +40,7 @@ def display(data_gen):
             print(data_act)
             data_act.to_csv(r'display.csv', index = False)
 
-''' Esta Funcion es la encargada guardar historial de movimientos de los equipos medicos'''
+# This function is in charge of storing the movement history of the devices.
 def save_history(tag, medevice, location):
     tag = int(tag)
     if os.path.isfile("hdevice.csv")==False: 
@@ -65,7 +65,7 @@ def save_history(tag, medevice, location):
         #print(data_gen)
         data_gen.to_csv(r'hdevice.csv', index = False)    
 
-''' Esta Funcion es la encargada de crear la base de datos de dispositivos medicos'''
+#This function is in charge of creating the devices database.
 def search_mdevice(tag, location):
     tag = int(tag)
     if os.path.isfile("mdevice.csv")==False: 
@@ -95,7 +95,7 @@ def search_mdevice(tag, location):
             print(data_gen)
             data_gen.to_csv(r'mdevice.csv', index = False)
 
-''' Esta Funcion es la encargada de crear la base de datos de dispositivos lectores RFID'''
+#This function is in charge of creating the database of RFID reader devices.
 def search_reader(ids, tag):
     tag = int(tag)
     ids = int(ids)
@@ -126,13 +126,13 @@ def search_reader(ids, tag):
             print(data_gen)
             data_gen.to_csv(r'readersl.csv', index = False)
 
-''' Esta Funcion es la encargada de suscribir la aplicación en el tópico device/r dentro del blocker'''
+#This function is in charge of subscribing the application to the device/r topic inside the broker.
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
 	client.subscribe("*TOPIC NAME*")
 	
-''' Esta Funcion es la encargada de recibir los mensajes que envían los rectores al tópico device/r dentro del blocker.
-Tambien envía dicha información a las funciones de registro de lectores y dispositivos medicos'''
+#This function is in charge of receiving the messages sent by the rectors to the device/r topic inside the broker.
+#It also sends this information to the readers and devices registration functions.
 def on_message(client, userdata, msg):
     read_broq = msg.payload.decode()
     read_broq = Convert(read_broq)
@@ -147,8 +147,8 @@ def on_message(client, userdata, msg):
     search_reader(ids, tag)
 
 
-client = mqtt.Client() #Utilizamos la case cliente para crear la instancia mqtt
-client.connect("broker.hivemq.com",1883,60) #Esta instrucción configura los parametros de conexión al brocker
+client = mqtt.Client() 
+client.connect("your.IP",1883,60) 
 #client.connect("192.168.1.11",1883,60)
 client.on_connect = on_connect
 client.on_message = on_message
