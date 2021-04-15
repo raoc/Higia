@@ -1,5 +1,5 @@
 # Higia
-Sistema de localizacion de dispositivos, registro en base de datos
+Indoor device location system with database registration
 
 EasyEDA project:
 - https://oshwlab.com/rafael.ortega.cohen/biolocate
