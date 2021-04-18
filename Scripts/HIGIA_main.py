@@ -91,7 +91,7 @@ def search_mdevice(tag, location):
             data_proc = pd.DataFrame(table_data)
             data_proc = data_proc.T
             data_proc = data_proc.rename(columns={0:"TAG",1:"MDEVICE"})
-            data_gen=dat.append(data_proc, ignore_index=True)
+            data_gen = dat.append(data_proc, ignore_index=True)
             print(data_gen)
             data_gen.to_csv(r'mdevice.csv', index = False)
 
@@ -122,7 +122,7 @@ def search_reader(ids, tag):
             data_proc = pd.DataFrame(table_data)
             data_proc = data_proc.T
             data_proc = data_proc.rename(columns={0:"SERIAL",1:"LOC"})
-            data_gen=dat.append(data_proc, ignore_index=True)
+            data_gen = dat.append(data_proc, ignore_index=True)
             print(data_gen)
             data_gen.to_csv(r'readersl.csv', index = False)
 
