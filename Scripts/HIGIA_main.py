@@ -50,7 +50,7 @@ def save_history(tag, medevice, location):
 
     if os.path.isfile("hdevice.csv")==False: 
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-        table_data=[tag, medevice, location, time]
+        table_data = [tag, medevice, location, time]
         data = pd.DataFrame(table_data)
         data = data.T
         data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
@@ -76,8 +76,8 @@ def search_mdevice(tag, location):
 
     if os.path.isfile("mdevice.csv")==False: 
         print('Digite el nombre del nuevo dispositivo medico con TAG: ', tag)
-        loc=input()
-        table_data=[tag, loc]
+        loc = input()
+        table_data = [tag, loc]
         data = pd.DataFrame(table_data)
         data = data.T
         data = data.rename(columns={0:"TAG",1:"MDEVICE"})
@@ -95,8 +95,8 @@ def search_mdevice(tag, location):
 
         else:
             print('Digite el nombre del nuevo dispositivo medico con TAG: ', tag)
-            loc=input()
-            table_data=[tag, loc]
+            loc = input()
+            table_data = [tag, loc]
             data_proc = pd.DataFrame(table_data)
             data_proc = data_proc.T
             data_proc = data_proc.rename(columns={0:"TAG",1:"MDEVICE"})
@@ -130,8 +130,8 @@ def search_reader(ids, tag):
            
         else:
             print('Digite la ubicación del nuevo lector: ', ids)
-            loc=input()
-            table_data=[ids, loc]
+            loc = input()
+            table_data = [ids, loc]
             data_proc = pd.DataFrame(table_data)
             data_proc = data_proc.T
             data_proc = data_proc.rename(columns={0:"SERIAL",1:"LOC"})
