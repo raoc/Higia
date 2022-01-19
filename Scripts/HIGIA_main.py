@@ -1,13 +1,13 @@
-import paho.mqtt.client as mqtt 
-import pandas as pd            
-import numpy as np             
-import os.path                  
-import os                       
-import datetime                 
+import paho.mqtt.client as mqtt
+import pandas as pd
+import numpy as np
+import os.path
+import os
+import datetime
 
 #This function converts the numerical values sent to it into String.
-def Convert(string): 
-    li = list(string.split(",")) 
+def Convert(string):
+    li = list(string.split(","))
     return li
 
 #This function will be the one that will generate the main localization file
@@ -16,14 +16,14 @@ def Convert(string):
 def display(data_gen):
 
     if os.path.isfile('display.csv')==False:
-        data = pd.DataFrame(data_gen) 
+        data = pd.DataFrame(data_gen)
         data = data.T
         data = data.rename(columns={0:"TAG",1:"MDEVICE",2:"LOCATION",3:"IN_TIME"})
         os.system('clear')
         print(data)
         data.to_csv(r'display.csv', index = False)
 
-    elif os.path.isfile("display.csv")==True:       
+    elif os.path.isfile("display.csv")==True:
         dat = pd.read_csv("display.csv")
         tags_gen = np.array(data_gen["TAG"])
         tags_act = np.array(dat["TAG"])
@@ -48,7 +48,7 @@ def display(data_gen):
 def save_history(tag, medevice, location):
     tag = int(tag)
 
-    if os.path.isfile("hdevice.csv")==False: 
+    if os.path.isfile("hdevice.csv")==False:
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
         table_data = [tag, medevice, location, time]
         data = pd.DataFrame(table_data)
@@ -58,7 +58,7 @@ def save_history(tag, medevice, location):
         display(data.iloc[0])
         data.to_csv(r'hdevice.csv', index = False)
 
-    elif os.path.isfile("hdevice.csv")==True:                
+    elif os.path.isfile("hdevice.csv")==True:
         dat = pd.read_csv("hdevice.csv")
         time = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
         table_data = [tag, medevice, location, time]
@@ -68,13 +68,13 @@ def save_history(tag, medevice, location):
         data_gen = pd.DataFrame(pd.concat([data_proc, dat])).reset_index().drop(columns='index')
         os.system('clear')
         display(data_gen.iloc[0])
-        data_gen.to_csv(r'hdevice.csv', index = False)    
+        data_gen.to_csv(r'hdevice.csv', index = False)
 
 #This function is in charge of creating the devices database.
 def search_mdevice(tag, location):
     tag = int(tag)
 
-    if os.path.isfile("mdevice.csv")==False: 
+    if os.path.isfile("mdevice.csv")==False:
         print('Digite el nombre del nuevo dispositivo medico con TAG: ', tag)
         loc = input()
         table_data = [tag, loc]
