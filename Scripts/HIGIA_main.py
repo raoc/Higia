@@ -161,14 +161,14 @@ def search_reader(ids, tag):
 
 
 # This function is in charge of subscribing the application to the device/r topic inside the broker.
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, rc):
     print("Connected with result code " + str(rc))
     client.subscribe("*TOPIC NAME*")
 
 
 # This function is in charge of receiving the messages sent by the rectors to the device/r topic inside the broker.
 # It also sends this information to the readers and devices registration functions.
-def on_message(client, userdata, msg):
+def on_message(msg):
     read_broq = msg.payload.decode()
     read_broq = Convert(read_broq)
     read_array = np.array(read_broq)
