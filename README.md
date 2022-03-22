@@ -10,3 +10,4 @@ EasyEDA project:
 
 - Cleanup code
 - Build new version
+- Migrate
