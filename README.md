@@ -1,3 +1,5 @@
+# THIS PROJECT IS CURRENTLY UNSUPPORTED
+---
 # Higia
 
 Indoor device location system with database registration
